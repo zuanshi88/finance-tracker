@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   has_many :user_stocks 
   has_many :stocks, through: :user_stocks 
+  has_many :friendships
+  has_many :friends, through: :friendships
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -20,6 +22,10 @@ class User < ApplicationRecord
   def can_track_stock?(ticker_symbol)
     under_stock_limit? && !stock_already_tracked?(ticker_symbol)
   end 
+
+    def friend_already_followed?(friend)
+      self.friends.include?(friend)
+    end
 
   def full_name 
    first_name || last_name ? "#{first_name} #{last_name}" : "Anonymous"

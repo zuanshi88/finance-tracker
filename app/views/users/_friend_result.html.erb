@@ -1,0 +1,21 @@
+
+
+<div class="results-block">
+    <%= render 'layouts/messages' %>
+</div>
+
+<% if @user %>
+    <div class="card card-header results-block mt-3">
+        <strong>Name: </strong> <%= @user.full_name %>
+        <strong>Email: </strong> <%= @user.email %>
+        <strong>Action: </strong> <%= "Another Action" %>
+        <% if !current_user.friend_already_followed?(@friend) %>
+            <%= link_to 'Add to friends', add_friend_path(user: current_user, friend: @friend),
+                                            class: "btn btn-xs btn-success" %>
+        <% else %>
+            <span class="badge bg-secondary">
+                    You are already following this user
+            </span>
+        <% end %>
+    </div>
+<% end %>
