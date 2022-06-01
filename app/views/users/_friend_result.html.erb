@@ -4,18 +4,23 @@
     <%= render 'layouts/messages' %>
 </div>
 
-<% if @user %>
+<% if @friends %>
     <div class="card card-header results-block mt-3">
-        <strong>Name: </strong> <%= @user.full_name %>
-        <strong>Email: </strong> <%= @user.email %>
-        <strong>Action: </strong> <%= "Another Action" %>
-        <% if !current_user.friend_already_followed?(@friend) %>
-            <%= link_to 'Add to friends', add_friend_path(user: current_user, friend: @friend),
-                                            class: "btn btn-xs btn-success" %>
-        <% else %>
-            <span class="badge bg-secondary">
-                    You are already following this user
-            </span>
-        <% end %>
+        <table class="col-md-12">
+           <tbody>
+            <% @friends.each do |friend| %>
+                <tr>
+                    <td><strong>Name: </strong> <%= friend.full_name %></td>
+                    <td><strong>Email: </strong> <%= friend.email %></td>
+                    <td><strong>Profile: </strong> <%= link_to "View Profile", user_path(friend), class: "btn btn-sm btn-success" %>
+                    <% if !current_user.friend_already_followed?(friend) %>
+                        <%= link_to 'Add to friends', friendships_path(id: friend.id), class: "btn btn-xs btn-success", method: :post %></td>
+                    <% else %> 
+                       <span class="badge badge-primary">Already following</span>
+                    <% end %>
+                </tr>   
+                <% end %>
+            </tbody>
+        </table>
     </div>
 <% end %>

@@ -25,7 +25,9 @@ class User < ApplicationRecord
 
     def friend_already_followed?(friend)
       self.friends.include?(friend)
+      # self.friends.where(id: friend.id).exists?
     end
+
 
   def full_name 
    first_name || last_name ? "#{first_name} #{last_name}" : "Anonymous"
@@ -51,7 +53,10 @@ class User < ApplicationRecord
   end 
 
   def self.matches(field_name, param) 
-    where("#{field_name} like ?", "#{param}")
+    where("#{field_name} like ?", "%#{param}%")
   end 
 
+  def except_current_user(users)
+    users.reject { |user| user.id == self.id }
+  end 
 end
